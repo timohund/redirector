@@ -13,20 +13,18 @@
             <div style="background:#fff;margin: -16px -16px 0 -16px;border: 1px solid #F7F7F7;">
                 <img style="margin: 0 auto;display:block" src="./responsive-design.jpg"/>
             </div>
-            <p>Current site: {{currentUrl.title}}</p>
+            <button v-if="!timerEnabled" v-on:click="startTimer();showUrlInputForm=false">Start {{currentUrl.title}}</button>
             <form v-if="showUrlInputForm" v-on:submit.prevent="saveNewUrl(formTitle, formUrl)">
                 <label>Title<input required type="text" v-model="formTitle"/></label>
                 <label>URL<input required type="url" v-model="formUrl"/></label>
-                <button>Add</button>
+                <button>Add {{ formTitle }}</button>
             </form>
             <template v-if="timerEnabled">
                 <p v-if="currentUrl.isAvailable">Redirecting to {{currentUrl.url}}</p>
                 <p v-if="!currentUrl.isAvailable">{{currentUrl.url}} not available. Retry in</p>
                 <p class="counter">{{ timerCount }}</p>
             </template>
-
-            <button class="stop" v-if="timerEnabled" v-on:click="timerEnabled=false;showUrlInputForm=true">Stop</button>
-            <button v-if="!timerEnabled" v-on:click="startTimer();showUrlInputForm=false">Start</button>
+            <button class="stop" v-if="timerEnabled" v-on:click="stopTimer();showUrlInputForm=true">Stop</button>
         </div>
         <div class="form">
             <h1>History</h1>
@@ -62,11 +60,13 @@
     },
     methods: {
       saveNewUrl: function (title, url) {
+        this.timerEnabled = false;
         var that = this
         var parameters = '?title=' + title + '&url=' + url
         axios.get('/api.php' + parameters)
           .then(function (response) {
             that.urlHistory = response.data
+            that.loadData()
             that.startTimer()
             that.$forceUpdate()
           })
@@ -86,6 +86,7 @@
           })
       },
       checkUrl: function () {
+        this.timerEnabled = false;
         var that = this
         axios.get('/api.php?checkUrl=' + this.currentUrl.url)
           .then(function (response) {
@@ -104,23 +105,24 @@
           })
       },
       startTimer: function () {
+        clearInterval(this.timerObject)
         this.timerCount = 5
         this.timerObject = setInterval(this.timerCallback, 1000)
         this.timerEnabled = true
       },
+      stopTimer: function () {
+        clearInterval(this.timerObject)
+        this.timerEnabled = false;
+      },
       timerCallback: function () {
-        if (!this.timerEnabled) {
-          clearInterval(this.timerObject)
-          return false
-        }
         if (this.timerCount > 0) {
           this.timerCount = this.timerCount - 1
         } else {
           if (this.currentUrl.isAvailable) {
             this.redirect()
           } else {
-            clearInterval(this.timerObject)
-            this.checkUrl()
+            this.stopTimer();
+            this.checkUrl();
           }
         }
       },
@@ -134,8 +136,7 @@
       document.addEventListener('visibilitychange', function () {
         this.windowIsActive = !document.hidden
         if (document.hidden) {
-          clearInterval(this.timerObject)
-          this.timerEnabled = false
+          that.stopTimer();
         } else {
           that.startTimer()
         }
