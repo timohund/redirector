@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome to Vue</title>
+    <title>Redirector</title>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
@@ -9,9 +9,9 @@
 <div id="app">
     <div class="container">
         <div class="form">
-            <h1>{{currentUrl.url}}</h1>
+            <h1><a href="{{currentUrl.url}}" target="_self">{{currentUrl.url}}</a></h1>
             <div style="background:#fff;margin: -16px -16px 0 -16px;border: 1px solid #F7F7F7;">
-                <img style="margin: 0 auto;display:block" src="./responsive-design.jpg"/>
+                <img style="margin: 0 auto 20px auto;display:block" src="./responsive-design.jpg"/>
             </div>
             <button v-if="!timerEnabled" v-on:click="startTimer();showUrlInputForm=false">Start {{currentUrl.title}}</button>
             <form v-if="showUrlInputForm" v-on:submit.prevent="saveNewUrl(formTitle, formUrl)">
@@ -20,7 +20,7 @@
                 <button>Add {{ formTitle }}</button>
             </form>
             <template v-if="timerEnabled">
-                <p v-if="currentUrl.isAvailable">Redirecting to {{currentUrl.url}}</p>
+                <p v-if="currentUrl.isAvailable">Redirecting to {{currentUrl.title}} ({{currentUrl.url}})</p>
                 <p v-if="!currentUrl.isAvailable">{{currentUrl.url}} not available. Retry in</p>
                 <p class="counter">{{ timerCount }}</p>
             </template>
@@ -28,9 +28,9 @@
         </div>
         <div class="form">
             <h1>History</h1>
-            <ul id="url-history">
+            <ul v-if="showUrlInputForm" id="url-history">
                 <template v-for="entry in urlHistory">
-                    <li v-on:click="saveNewUrl(entry.title, entry.url)"> {{ entry.title }}<br/>{{ entry.url }}</li>
+                    <li v-on:click="saveNewUrl(entry.title, entry.url)">{{ entry.title }}<br/>{{ entry.url }}</li>
                 </template>
             </ul>
         </div>
@@ -122,7 +122,7 @@
             this.redirect()
           } else {
             this.stopTimer();
-            this.checkUrl();
+            this.loadData();
           }
         }
       },
@@ -167,7 +167,7 @@
     }
 
     .form h1 {
-        background: #43D1AF;
+        background: #a6bf02;
         padding: 20px 0;
         font-size: 140%;
         font-weight: 300;
@@ -176,10 +176,19 @@
         margin: -16px -16px 16px -16px;
     }
 
+    .form h1 a {
+        color: #fff;
+
+    }
+
+    .form h1 a:hover {
+        color: #fff;
+    }
+
     .counter {
         padding: 0;
         margin-bottom: 20px;
-        background-color: #2EBC99;
+        background-color: #a6bf02;
         color: #fff;
         font-size: 60px;
         text-align: center;
@@ -222,9 +231,9 @@
     .form input[type="url"]:focus,
     .form textarea:focus,
     .form select:focus {
-        box-shadow: 0 0 5px #43D1AF;
+        box-shadow: 0 0 5px #a6bf02;
         padding: 3%;
-        border: 1px solid #43D1AF;
+        border: 1px solid #a6bf02;
     }
 
     .form button {
@@ -233,8 +242,7 @@
         -moz-box-sizing: border-box;
         width: 100%;
         padding: 3%;
-        background: #43D1AF;
-        border-bottom: 2px solid #30C29E;
+        background: #a6bf02;
         border-top-style: none;
         border-right-style: none;
         border-left-style: none;
@@ -242,13 +250,12 @@
     }
 
     .form button {
-        background: #2EBC99;
+        background: #a6bf02;
         margin-bottom: 10px;
     }
 
     .form button.stop {
-        background: #ffa5a5;
-        border-bottom: 2px solid #eea5a5;
+        background: #482718;
     }
 
     .form li {
