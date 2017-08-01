@@ -13,8 +13,8 @@
             <div style="background:#fff;margin: -16px -16px 0 -16px;border: 1px solid #F7F7F7;">
                 <img style="margin: 0 auto 20px auto;display:block" src="./responsive-design.jpg"/>
             </div>
-            <button v-if="!redirectEnabled" v-on:click="redirectEnabled=true;showUrlInputForm=false">Start {{currentUrl.title}}</button>
-            <form v-if="showUrlInputForm" v-on:submit.prevent="saveNewUrl(formTitle, formUrl)">
+            <button v-if="!redirectEnabled" v-on:click="redirectEnabled=true;startTimer()">Start {{currentUrl.title}}</button>
+            <form v-if="!redirectEnabled" v-on:submit.prevent="saveNewUrl(formTitle, formUrl)">
                 <label>Title<input required type="text" v-model="formTitle"/></label>
                 <label>URL<input required type="url" v-model="formUrl"/></label>
                 <button>Add {{ formTitle }}</button>
@@ -24,11 +24,11 @@
                 <p v-if="!currentUrl.isAvailable">{{currentUrl.url}} not available. Retry in</p>
                 <p class="counter">{{ timerCount }}</p>
             </template>
-            <button class="stop" v-if="redirectEnabled" v-on:click="showUrlInputForm=true;redirectEnabled=false">Stop</button>
+            <button class="stop" v-if="redirectEnabled" v-on:click="redirectEnabled=false">Stop</button>
         </div>
-        <div class="form">
+        <div v-if="!redirectEnabled" class="form">
             <h1>History</h1>
-            <ul v-if="showUrlInputForm" id="url-history">
+            <ul id="url-history">
                 <template v-for="entry in urlHistory">
                     <li v-on:click="saveNewUrl(entry.title, entry.url)">{{ entry.title }}<br/>{{ entry.url }}</li>
                 </template>
@@ -47,7 +47,6 @@
         urlHistory: {},
         formTitle: '',
         formUrl: '',
-        showUrlInputForm: false,
         timerEnabled: false,
         redirectEnabled: false,
         timerCount: 5,
@@ -83,10 +82,8 @@
                   that.urlHistory = response.data
                   that.redirectEnabled = true
                   that.checkUrl()
-              } else {
-                  that.startTimer()
+                  that.$forceUpdate()
               }
-              that.$forceUpdate()
           })
           .catch(function (error) {
             console.log('Api could not be reached')
@@ -96,12 +93,11 @@
         var that = this
         axios.get('/api.php?checkUrl=' + this.currentUrl.url)
           .then(function (response) {
-            console.log(response)
-              if (response.data.status == 200 || response.data.status == 302) {
+            console.log(response.data.status)
+              if ([200, 301, 302].includes(response.data.status)) {
               that.currentUrl.isAvailable = true
             } else {
               that.currentUrl.isAvailable = false
-              that.showUrlInputForm = true
             }
             that.$forceUpdate()
             that.startTimer()
@@ -127,7 +123,6 @@
           if (this.currentUrl.isAvailable) {
               this.redirect()
           } else {
-            this.stopTimer();
             this.loadData();
           }
         }
@@ -142,11 +137,12 @@
       this.loadData()
       var that = this
       document.addEventListener('visibilitychange', function () {
-        this.windowIsActive = !document.hidden
         if (document.hidden) {
           that.stopTimer();
         } else {
-          that.startTimer()
+          that.loadData()
+          that.redirectEnabled = true
+          that.timerEnabled = true
         }
       }, false)
     }
