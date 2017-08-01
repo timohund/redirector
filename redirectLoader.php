@@ -43,6 +43,7 @@ class redirectLoader
         $handle = curl_init($urlToParse);
         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle,  CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($handle, CURLOPT_TIMEOUT, 3);
         $response = curl_exec($handle);
         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         curl_close($handle);

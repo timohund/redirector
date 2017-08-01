@@ -9,22 +9,22 @@
 <div id="app">
     <div class="container">
         <div class="form">
-            <h1><a href="{{currentUrl.url}}" target="_self">{{currentUrl.url}}</a></h1>
+            <h1><a :href="currentUrl.url" target="_self">{{currentUrl.url}}</a></h1>
             <div style="background:#fff;margin: -16px -16px 0 -16px;border: 1px solid #F7F7F7;">
                 <img style="margin: 0 auto 20px auto;display:block" src="./responsive-design.jpg"/>
             </div>
-            <button v-if="!timerEnabled" v-on:click="startTimer();showUrlInputForm=false">Start {{currentUrl.title}}</button>
+            <button v-if="!redirectEnabled" v-on:click="redirectEnabled=true;showUrlInputForm=false">Start {{currentUrl.title}}</button>
             <form v-if="showUrlInputForm" v-on:submit.prevent="saveNewUrl(formTitle, formUrl)">
                 <label>Title<input required type="text" v-model="formTitle"/></label>
                 <label>URL<input required type="url" v-model="formUrl"/></label>
                 <button>Add {{ formTitle }}</button>
             </form>
-            <template v-if="timerEnabled">
+            <template v-if="redirectEnabled">
                 <p v-if="currentUrl.isAvailable">Redirecting to {{currentUrl.title}} ({{currentUrl.url}})</p>
                 <p v-if="!currentUrl.isAvailable">{{currentUrl.url}} not available. Retry in</p>
                 <p class="counter">{{ timerCount }}</p>
             </template>
-            <button class="stop" v-if="timerEnabled" v-on:click="stopTimer();showUrlInputForm=true">Stop</button>
+            <button class="stop" v-if="redirectEnabled" v-on:click="showUrlInputForm=true;redirectEnabled=false">Stop</button>
         </div>
         <div class="form">
             <h1>History</h1>
@@ -49,6 +49,7 @@
         formUrl: '',
         showUrlInputForm: false,
         timerEnabled: false,
+        redirectEnabled: false,
         timerCount: 5,
         windowIsActive: true
       }
@@ -78,20 +79,25 @@
         var that = this
         axios.get('/api.php')
           .then(function (response) {
-            that.urlHistory = response.data
-            that.checkUrl()
+              if(that.currentUrl != response.data[0].url) {
+                  that.urlHistory = response.data
+                  that.redirectEnabled = true
+                  that.checkUrl()
+              } else {
+                  that.startTimer()
+              }
+              that.$forceUpdate()
           })
           .catch(function (error) {
             console.log('Api could not be reached')
           })
       },
       checkUrl: function () {
-        this.timerEnabled = false;
         var that = this
         axios.get('/api.php?checkUrl=' + this.currentUrl.url)
           .then(function (response) {
             console.log(response)
-            if (response.data.status == 200) {
+              if (response.data.status == 200 || response.data.status == 302) {
               that.currentUrl.isAvailable = true
             } else {
               that.currentUrl.isAvailable = false
@@ -119,7 +125,7 @@
           this.timerCount = this.timerCount - 1
         } else {
           if (this.currentUrl.isAvailable) {
-            this.redirect()
+              this.redirect()
           } else {
             this.stopTimer();
             this.loadData();
@@ -127,7 +133,9 @@
         }
       },
       redirect: function () {
-        window.location = this.currentUrl.url
+        if(this.redirectEnabled) {
+          window.location = this.currentUrl.url
+        }
       }
     },
     created: function () {
