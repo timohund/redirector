@@ -11,7 +11,7 @@
         <div class="form">
             <h1><a :href="currentUrl.url" target="_self">{{currentUrl.url}}</a></h1>
             <div style="background:#fff;margin: -16px -16px 0 -16px;border: 1px solid #F7F7F7;">
-                <img style="margin: 0 auto 20px auto;display:block" src="./responsive-design.jpg"/>
+                <img style="margin: 0 auto 20px auto;display:block" src="./assets/responsive-design.jpg"/>
             </div>
             <button v-if="!redirectEnabled" v-on:click="redirectEnabled=true;startTimer()">Start {{currentUrl.title}}</button>
             <form v-if="!redirectEnabled" v-on:submit.prevent="saveNewUrl(formTitle, formUrl)">
@@ -62,8 +62,8 @@
       saveNewUrl: function (title, url) {
         this.timerEnabled = false;
         var that = this
-        var parameters = '?title=' + title + '&url=' + url
-        axios.get('/api.php' + parameters)
+        var parameters = '?title=' + encodeURI(title) + '&url=' + encodeURI(url)
+        axios.get('/api' + parameters)
           .then(function (response) {
             that.urlHistory = response.data
             that.loadData()
@@ -76,7 +76,7 @@
       },
       loadData: function () {
         var that = this
-        axios.get('/api.php')
+        axios.get('/api')
           .then(function (response) {
               if(that.currentUrl != response.data[0].url) {
                   that.urlHistory = response.data
@@ -91,7 +91,7 @@
       },
       checkUrl: function () {
         var that = this
-        axios.get('/api.php?checkUrl=' + this.currentUrl.url)
+        axios.get('/api?checkUrl=' + this.currentUrl.url)
           .then(function (response) {
             console.log(response.data.status)
               if ([200, 301, 302].includes(response.data.status)) {
