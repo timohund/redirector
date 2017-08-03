@@ -15,9 +15,9 @@ This tool works best in conjunction with [Browsersync](browsersync.io).
     ```bash
     php -S localhost:8000
     ``` 
-    in the ``redirector` directory` ([php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php))
+    in the `redirector` directory ([php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php))
 2. Set the Browser-Startpage in all your testdevices to the URL to ``redirector``
-3. Set your testpage via ``redirector`` frontend or by using the api (see 'configuration')
+3. Set your testpage via `redirector` frontend or by using the api (see 'configuration')
 
 The given url for the testpage is checked and if it's available you get redirected on all devices.
 ## Developing
@@ -44,15 +44,14 @@ Just clone the repo and push it to your server.
 ## Features
 
 What's all the bells and whistles this project can perform?
-* What's the main functionality
-* You can also do another thing
-* If you get really randy, you can even do this
+
+[... coming soon ...]
 
 ## Configuration / API Documentation
 
 You will probably mainly use the get-request to set a new url programatically.
 ```
-/api?title=[your title]:%20Google&url=[your url]
+/api?title=[your title]&url=[your url]
 ```
 
 #### /api
@@ -96,7 +95,7 @@ Output:
  }
 ```
 
-#### /api?title=[your title]:%20Google&url=[your url]
+#### /api?title=[your title]&url=[your url]
 Type: `String`  
 
 Both arguments are mandatory
