@@ -1,3 +1,4 @@
+![Banner](htdocs/assets/redirector-banner.jpg "Banner")
 # redirector
 > Never type urls in your test devices again!
 
