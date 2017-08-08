@@ -2,7 +2,7 @@
 # redirector
 > Never type urls in your test devices again!
 
-Use case: Multiple test devices, multiple persons who are testing
+Use case: Multiple test devices, multiple persons who want to run tests from their own machine
 
 Redirector allows you to set your test url on all your devices at once for testing a certain site.
 Because of its api you can even set the url automagically for your project using a taskrunner like gulp.
