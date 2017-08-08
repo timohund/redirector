@@ -10,37 +10,34 @@ Because of its api you can even set the url automagically for your project using
 This tool works best in conjunction with [Browsersync](browsersync.io).
 ## Installing / Getting started
 
-1.  Clone the repo and put its content on a PHP-capable server.
+1.  Clone the repo and put the `htdocs` directory on a PHP-capable server.
     * Server has to be in the same network as the devices you're going to test.
-    * if you want to do a quick test run on your local machine you can run
+    * if you want to do a quick test on your local machine you can run
     ```bash
     php -S localhost:8000
     ``` 
-    in the `redirector` directory ([php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php))
-2. Set the Browser-Startpage in all your testdevices to the URL to ``redirector``
-3. Set your testpage via `redirector` frontend or by using the api (see 'configuration')
+    inside the `htdocs` directory ([php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php))
+2. Set the Browser-Startpage in all your testdevices to the URL of your server / the redirector `htdocs` directory
+3. Set the page you want to test by opening up your new startpage or by using the api (see 'configuration')
 
-The given url for the testpage is checked and if it's available you get redirected on all devices.
+The given url for your testpage is checked and if it's available you get redirected on all devices.
 ## Developing
 
 This project (because of its small size) was explicitly built without using a big toolchain.
 Libraries are pulled from CDN.
 
-To start testing install php and do:
+To start testing install php, go inside `htdocs` folder and do:
 
 ```bash
 php -S localhost:8000
 ``` 
-
-
 ### Building
 
 There is no build step needed *yay*
 
 ### Deploying / Publishing
 
-If you don't care about a readme.md and stuff lying around on your server:
-Just clone the repo and push it to your server.
+Just clone the repo and push the `htdocs` directory to your _internal_ server.
 
 ## Features
 
