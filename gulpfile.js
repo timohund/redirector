@@ -6,6 +6,7 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   sass = require('gulp-sass'),
   clean = require('gulp-clean'),
+  ghPages = require('gulp-gh-pages'),
   browserSync = require('browser-sync').create();
 
 var options = {
@@ -29,9 +30,12 @@ gulp.task('scss', function () {
 gulp.task('scripts', function() {
   return gulp.src([
     './private/js/jquery.min.js',
+    './private/js/highlight.pack.js',
     './private/js/skel.min.js',
     './private/js/util.js',
-    './private/js/main.js'
+    './private/js/main.js',
+    './private/js/markdownConverter.js',
+    './private/js/loadMarkdown.js'
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('app.js'))
@@ -81,11 +85,16 @@ gulp.task('serve', ['build'], function() {
   });
 
   // watch for LESS files
-  gulp.watch(options.src + "/scss/**/*.scss", ['scss']);
+  gulp.watch(options.src + "/sass/**/*.scss", ['scss']);
   // watch for HTML files
-  gulp.watch(options.src + "/*.html").on('change', function(){browserSync.reload(); gulp.run('copy')});
+  gulp.watch(options.src + "**/**.html").on('change', function(){gulp.run('copy');browserSync.reload()});
   // watch for JS files
-  gulp.watch(options.src + "/javascript/**/**/*.js", ['js-watch']);
+  gulp.watch(options.src + "/js/**/**/*.js", ['js-watch']);
+});
+
+gulp.task('deploy', function() {
+    return gulp.src('./public/**/*')
+        .pipe(ghPages());
 });
 
 gulp.task('default', ['serve']);

@@ -15,3 +15,12 @@
 			display: none;
 		}
 	}
+
+.dkd-badge {
+	background-image: url("#{$imagePath}/dkd-wortmarke.svg");
+	background-size: 100% 100%;
+	display: block;
+	width: 80%;
+	height: 80%;
+	margin: 10%;
+}

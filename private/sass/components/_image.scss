@@ -4,6 +4,10 @@
 /// Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 ///
 
+img {
+	max-width: 100%;
+}
+
 /* Image */
 
 	.image {
@@ -14,7 +18,7 @@
 
 		&:before {
 			@include vendor('pointer-events', 'none');
-			background-image: url('../../images/overlay.png');
+			background-image: url('#{$imagePath}/overlay.png');
 			background-color: _palette(bg-overlay);
 			border-radius: _size(border-radius);
 			content: '';
