@@ -1,5 +1,8 @@
 .idea/
 api/urls.json
+.publish/
+node_modules/
+public/
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
