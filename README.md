@@ -13,11 +13,10 @@ This tool works best in conjunction with [Browsersync](browsersync.io).
 1.  Clone the repo and put the `htdocs` directory on a PHP-capable server.
     * Server has to be in the same network as the devices you're going to test.
     * if you want to do a quick test on your local machine you can run
-      ```bash
-      php -S localhost:8000
-      ```
-      inside the `htdocs` directory - [php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php)
-
+    ```bash
+    php -S localhost:8000 -t htdocs/
+    ```
+    ([php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php))
 2. Set the Browser-Startpage in all your testdevices to the URL of your server / the redirector `htdocs` directory
 3. Set the page you want to test by opening up your new startpage or by using the api (see 'configuration')
 
@@ -27,10 +26,9 @@ The given url for your testpage is checked and if it's available you get redirec
 This project (because of its small size) was explicitly built without using a big toolchain.
 Libraries are pulled from CDN.
 
-To start testing install php, go inside `htdocs` folder and do:
-
+To start testing run
 ```bash
-php -S localhost:8000
+php -S localhost:8000 -t htdocs/
 ``` 
 ### Building
 
