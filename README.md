@@ -16,7 +16,7 @@ This tool works best in conjunction with [Browsersync](browsersync.io).
       ```bash
       php -S localhost:8000
       ```
-      inside the `htdocs` directory ([php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php))
+      inside the `htdocs` directory - [php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php)
 
 2. Set the Browser-Startpage in all your testdevices to the URL of your server / the redirector `htdocs` directory
 3. Set the page you want to test by opening up your new startpage or by using the api (see 'configuration')
