@@ -14,7 +14,7 @@ This tool works best in conjunction with [Browsersync](browsersync.io).
     * Server has to be in the same network as the devices you're going to test.
     * if you want to do a quick test on your local machine you can run
     ```bash
-    php -S localhost:8000 -t htdocs/
+    php -S localhost:8000 -t htdocs
     ```
     ([php must be installed for this to work](http://php.net/manual/en/features.commandline.webserver.php))
 2. Set the Browser-Startpage in all your testdevices to the URL of your server / the redirector `htdocs` directory
@@ -28,7 +28,7 @@ Libraries are pulled from CDN.
 
 To start testing run
 ```bash
-php -S localhost:8000 -t htdocs/
+php -S localhost:8000 -t htdocs
 ``` 
 ### Building
 
