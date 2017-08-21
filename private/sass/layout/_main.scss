@@ -111,3 +111,9 @@
 	position: relative;
 	top: 10px;
 }
+
+.main-headline {
+	&:first-letter {
+		color: rgba(166,191,2,1);
+	}
+}
