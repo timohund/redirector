@@ -77,10 +77,12 @@ gulp.task('copy', function() {
  * and watches/autoreloads the files.
  */
 gulp.task('serve', ['build'], function() {
-
   browserSync.init(["css/*.css", "js/*.js"], {
     server: {
-      baseDir: options.dist
+      baseDir: options.dist,
+      routes: {
+        '/redirector/images': options.dist + '/images'
+      }
     }
   });
 

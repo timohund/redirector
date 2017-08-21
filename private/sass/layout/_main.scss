@@ -23,7 +23,7 @@
 				'opacity #{_duration(article)} ease-in-out',
 				'transform #{_duration(article)} ease-in-out'
 			));
-			@include padding(2.5rem, 2.5rem, (2rem, 0, 1rem, 0));
+			padding: 1.5rem 2.5rem 2.5rem 2.5rem;
 			position: relative;
 			width: 40rem;
 			max-width: 100%;
@@ -37,8 +37,9 @@
 			}
 
 			.close {
+				z-index: 100;
 				display: block;
-				position: absolute;
+				position: sticky;
 				top: 0;
 				right: 0;
 				width: 4rem;
@@ -47,6 +48,7 @@
 				text-indent: 4rem;
 				overflow: hidden;
 				white-space: nowrap;
+				float: right;
 
 				&:before {
 					@include vendor('transition', 'background-color #{_duration(transition)} ease-in-out');
@@ -62,6 +64,8 @@
 					background-image: svg-url('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" zoomAndPan="disable"><style>line { stroke: #{_palette(border)}; stroke-width: 1; }</style><line x1="2" y1="2" x2="18" y2="18" /><line x1="18" y1="2" x2="2" y2="18" /></svg>');
 					background-size: 20px 20px;
 					background-repeat: no-repeat;
+					background-color: _palette(bg-overlay);
+					border: 1px solid _palette(border-bg);
 				}
 
 				&:hover {

@@ -299,7 +299,7 @@
 
 					// Close.
 						$('<div class="close">Close</div>')
-							.appendTo($this)
+							.prependTo($this)
 							.on('click', function() {
 								location.hash = '';
 							});
