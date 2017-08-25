@@ -3,6 +3,10 @@
 <head>
     <title>Redirector</title>
     <link rel='icon' type='image/x-icon' href='/favicon.ico' />
+    <!--Polyfill for older android phones, for example samsung ...-->
+    <script src="./javascript/array.prototype.includes-polyfill.js"></script>
+    <!--Polyfill es6 Promises for old windows mobile phones-->
+    <script src="./javascript/es6-promise.auto.min.js"></script>
     <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,6 +17,20 @@
 
         body {
             color: #333;
+        }
+
+        a {
+            color: #a6bf02;
+            text-decoration: none;
+            border-bottom: 1px dotted #a6bf02;
+        }
+
+        a:visited {
+            color: #482718;
+        }
+
+        a:hover {
+            border-bottom: 1px solid #a6bf02;
         }
 
         .container {
@@ -169,6 +187,7 @@
                 <p class="counter">{{ timerCount }}</p>
             </template>
             <button class="stop" v-if="redirectEnabled" v-on:click="redirectEnabled=false">Stop</button>
+            <a href="http://www.putzek.com/redirector/#intro" title="Get help">How does it work?</a>
         </div>
         <div v-if="!redirectEnabled" class="form">
             <h1>History</h1>
